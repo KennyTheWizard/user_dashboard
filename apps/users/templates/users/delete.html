@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Register</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div id="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'users:index' %}">Test app</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+              {% if request.session.user_id %}
+              <li><a href="{% url 'users:dashboard' %}">Dashboard</a></li>
+              <li><a href="{% url 'users:edit' user_id=request.session.user_id %}">Profile</a></li>
+              {% else %}
+              <li><a href="{% url 'users:index' %}">Home</a></li>
+              {% endif %}
+          </ul>
+          {% if request.session.user_id %}
+          <div class="navbar-nav navbar-right">
+              <ul class="nav navbar-nav">
+                <li><a class="navbar-right" href="{% url 'users:logout' %}">Log Off</a></li>
+              </ul>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="container">
+        <div class="jumbotron">
+            <h3>Are you sure you want to delete {{del_user.first_name}} {{del_user.last_name}}?</h3>
+            <div class="row">
+                <div class="col-sm-6">
+                    <a class="btn btn-primary" href="{% url 'users:dashboard' %}">Return to Dashboard</a>
+                </div>
+                <div class="col-sm-6">
+                    <form action="{% url 'users:destroy' user_id=del_user.id %}" method="post">
+                        {% csrf_token %}
+                        <input class="btn btn-danger pull-right" type="submit" value="Delete User">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </body>
+</html>
